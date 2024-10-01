@@ -100,6 +100,10 @@ raw_train.group_by('person_home_ownership','loan_status').len().sort(by = ['pers
 # let's see the number of cases by response var
 raw_train.group_by('loan_status').len()
 
+# person income
+
+raw_train.filter(pl.col('person_income') > 500000).sort(by = 'person_income', descending = True)
+
 """
 PLOTS
 """
