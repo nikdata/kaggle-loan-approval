@@ -1,0 +1,16 @@
+wheel
+plotly
+plotly-express
+ipywidgets
+jupyterlab
+polars
+seaborn
+numpy
+matplotlib
+scikit-learn
+xgboost
+optuna
+pyarrow
+db-dtypes
+imbalanced-learn
+pandas

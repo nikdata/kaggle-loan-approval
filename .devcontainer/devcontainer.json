@@ -1,0 +1,47 @@
+{
+    "name": "${localEnv:PROJECT_NAME:loan_approval}",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            // define arguments to be used by dockerfile during build process
+            "PYTHON_VER":"3.12",
+            "PYTHON_ENV":"loan_approval",
+            "SETUP_FOLDER":"req"
+        }
+    },
+  // SPECIFIC TO VSCODE
+    "customizations": {
+        "settings": {
+            // Define python path - based on env created in setup_env.sh
+            "python.defaultInterpreterPath": "/opt/${localEnv:PROJECT_A_NAME:loan_approval}/bin/python",
+            "python.selectInterpreter": "/opt/${localEnv:PROJECT_A_NAME:loan_approval}/bin/python",
+            // Disable A/B experiments from VSCode
+            "python.experiments.enabled": false,
+            "workbench.enableExperiments": false,
+            "jupyter.experiments.enabled": false,
+            // Enable Ruff for linting
+            "editor.formatOnSaveMode": false,
+            "editor.defaultFormatter": "charliemarsh.ruff"
+        },
+        "vscode": {
+            "extensions": [
+                // Documentation Extensions
+                "purocean.drawio-preview",
+                "redhat.vscode-yaml",
+                "yzhang.markdown-all-in-one",
+                // Docker Supporting Extensions
+                "ms-azuretools.vscode-docker",
+                "ms-vscode-remote.remote-containers",
+                // Python Extensions
+                "ms-python.python",
+                "ms-toolsai.jupyter",
+                "charliermarsh.ruff",
+                // Github Actions
+                "github.vscode-github-actions"
+            ]
+        }
+    },
+    "runArgs": [
+        "--name", "loan_approval"
+    ]
+}
