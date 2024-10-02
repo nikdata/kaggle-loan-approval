@@ -32,6 +32,17 @@ raw_train.describe(percentiles=[0.25, 0.50, 0.75, 0.90, 0.95, 0.99])
 raw_test.describe(percentiles=[0.25, 0.50, 0.75, 0.90, 0.95, 0.99])
 # no missing values
 
+raw_train.select('person_age').filter(pl.col('person_age') > 70).shape
+raw_train.select('person_income').filter(pl.col('person_income') > 300000).shape
+raw_test.select('person_income').filter(pl.col('person_income') > 1000000).shape
+
+raw_train.select(pl.col('person_income').log().skew())
+raw_train.select(pl.col('person_income').kurtosis(fisher=False))
+
+raw_train.select(pl.col('person_age').log().skew())
+raw_train.select(pl.col('person_age').kurtosis(fisher=False))
+
+
 # SKEW ----
 raw_train.select(cs.by_dtype(pl.Int64, pl.Float64)).select(pl.all().skew(bias=False).round(3))
 raw_test.select(cs.by_dtype(pl.Int64, pl.Float64)).select(pl.all().skew(bias=False).round(3))
@@ -122,6 +133,10 @@ for i in range(0,len(number_cols)):
 # person age
 fig, ax = plt.subplots()
 p = so.Plot(raw_train.filter(pl.col('person_age') >= 60.0)).add(so.Bars(), so.Hist(stat = 'count', bins = 20), x = 'person_age').label(title = "age distribution")
+p.on(ax).show()
+
+fig, ax = plt.subplots()
+p = so.Plot(raw_test.filter(pl.col('person_age') >= 60.0)).add(so.Bars(), so.Hist(stat = 'count', bins = 20), x = 'person_age').label(title = "age distribution")
 p.on(ax).show()
 
 raw_train.with_columns(rounded_age = ((pl.col('person_age')/10.0).floor()) * 10).group_by('rounded_age').len().sort(by = 'rounded_age').with_columns(pct = ((pl.col('len')/pl.col('len').sum())*100).round(1))

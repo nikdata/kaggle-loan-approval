@@ -28,3 +28,11 @@ pl.Config.set_tbl_cols(-1)
 raw_train = pl.read_csv('data/train.csv')
 raw_test = pl.read_csv('data/test.csv')
 
+# reduce number of categories
+def reduce_cats(df):
+    ans = df \
+        .with_columns(pl.when(pl.col('person_home_ownership') != 'RENT').then(pl.lit(0)).otherwise(pl.lit(1)).alias('renting')) \
+        .with_columns(pl.when(pl.col('loan_grade') == 'A').then(pl.lit('a')).when(pl.col('loan_grade')=='B').then(pl.lit('b')).otherwise(pl.lit('other')).alias('new_loan_grade'))
+
+    return(ans)
+
